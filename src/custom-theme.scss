@@ -1,16 +1,64 @@
 
-// Custom Theming for Angular Material
-// For more information: https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
 
 html {
+  color-scheme: light;
+  background: #f7f8fa;
+  color: #1f2937;
+
   @include mat.theme((
     color: (
       theme-type: light,
-      primary: mat.$azure-palette,
-      tertiary: mat.$blue-palette,
+      primary: mat.$magenta-palette,
+      tertiary: mat.$rose-palette,
     ),
     typography: Roboto,
     density: 0,
   ));
+}
+
+:root {
+  --app-color-primary: #e91e63;
+  --app-color-primary-hover: #c2185b;
+  --app-color-text: #1f2937;
+  --app-color-muted: #667085;
+  --app-color-border: #d9dee7;
+  --app-color-surface: #ffffff;
+  --app-color-page: #f7f8fa;
+  --app-radius: 8px;
+}
+
+.mat-mdc-card {
+  --mdc-elevated-card-container-color: var(--app-color-surface);
+  --mdc-elevated-card-container-shape: var(--app-radius);
+  border: 1px solid var(--app-color-border);
+  box-shadow: 0 8px 24px rgb(15 23 42 / 8%);
+}
+
+.mat-mdc-raised-button.mat-primary,
+.mat-mdc-unelevated-button.mat-primary {
+  --mdc-protected-button-container-color: var(--app-color-primary);
+  --mdc-filled-button-container-color: var(--app-color-primary);
+  --mdc-protected-button-label-text-color: #ffffff;
+  --mdc-filled-button-label-text-color: #ffffff;
+}
+
+.mat-mdc-raised-button.mat-primary:hover,
+.mat-mdc-unelevated-button.mat-primary:hover {
+  --mdc-protected-button-container-color: var(--app-color-primary-hover);
+  --mdc-filled-button-container-color: var(--app-color-primary-hover);
+}
+
+.mat-mdc-form-field {
+  --mdc-outlined-text-field-container-shape: var(--app-radius);
+  --mdc-outlined-text-field-outline-color: var(--app-color-border);
+  --mdc-outlined-text-field-hover-outline-color: var(--app-color-muted);
+}
+
+.mat-mdc-dialog-container {
+  --mdc-dialog-container-shape: var(--app-radius);
+}
+
+.mat-mdc-progress-spinner {
+  --mdc-circular-progress-active-indicator-color: var(--app-color-primary);
 }
