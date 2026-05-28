@@ -1,10 +1,12 @@
 import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent],
+      providers: [provideRouter([])],
     }).compileComponents();
   });
 
@@ -20,10 +22,10 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('desafio-frontend-attus');
   });
 
-  it('should render title', () => {
+  it('should render the toolbar', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, desafio-frontend-attus');
+    expect(compiled.querySelector('app-toolbar')).toBeTruthy();
   });
 });

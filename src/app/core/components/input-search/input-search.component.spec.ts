@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ToolbarComponent } from './toolbar.component';
+import { InputSerchComponent } from './input-search.component';
 
-describe('ToolbarComponent', () => {
-  let component: ToolbarComponent;
-  let fixture: ComponentFixture<ToolbarComponent>;
+describe('InputSerchComponent', () => {
+  let component: InputSerchComponent;
+  let fixture: ComponentFixture<InputSerchComponent>;
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      imports: [ToolbarComponent],
+      imports: [InputSerchComponent],
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ToolbarComponent);
+    fixture = TestBed.createComponent(InputSerchComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
