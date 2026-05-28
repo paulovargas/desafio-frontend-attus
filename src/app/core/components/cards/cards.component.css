@@ -1,0 +1,109 @@
+:host {
+  display: block;
+  width: calc(100% - 144px);
+  max-width: 730px;
+  margin: 34px auto 0;
+}
+
+mat-card {
+  position: relative;
+  display: block;
+  padding: 0;
+  overflow: visible;
+}
+
+mat-card::before {
+  content: "Usuarios cadastrados";
+  position: absolute;
+  top: -19px;
+  left: 20px;
+  color: #222222;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+table {
+  width: 100%;
+  table-layout: fixed;
+  background: #ffffff;
+  border-collapse: collapse;
+}
+
+tr.mat-mdc-header-row {
+  display: none;
+}
+
+tr.mat-mdc-row {
+  height: 33px;
+}
+
+td.mat-mdc-cell {
+  height: 33px;
+  padding: 0;
+  border-bottom: 0;
+  color: #222222;
+  font-size: 11px;
+  line-height: 33px;
+  white-space: nowrap;
+}
+
+.mat-column-icon {
+  width: 60px;
+  text-align: center;
+}
+
+.mat-column-name {
+  width: 286px;
+  font-weight: 700;
+}
+
+.mat-column-email {
+  width: auto;
+  color: #2f2f2f;
+}
+
+.mat-column-action {
+  width: 60px;
+  text-align: center;
+}
+
+.mat-column-icon .mat-icon {
+  width: 18px;
+  height: 18px;
+  color: #5f5f5f;
+  font-size: 18px;
+  line-height: 18px;
+  vertical-align: middle;
+}
+
+.mat-column-action button {
+  width: 28px;
+  height: 28px;
+  color: #5f5f5f;
+}
+
+.mat-column-action .mat-icon {
+  width: 18px;
+  height: 18px;
+  font-size: 18px;
+  line-height: 18px;
+}
+
+@media (max-width: 720px) {
+  :host {
+    width: calc(100% - 24px);
+  }
+
+  .mat-column-icon,
+  .mat-column-action {
+    width: 44px;
+  }
+
+  .mat-column-name {
+    width: 40%;
+  }
+
+  td.mat-mdc-cell {
+    font-size: 10px;
+  }
+}

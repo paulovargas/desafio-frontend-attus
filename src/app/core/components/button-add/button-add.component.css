@@ -1,5 +1,27 @@
+:host {
+  position: fixed;
+  right: 13px;
+  bottom: 13px;
+  z-index: 10;
+  display: block;
+}
+
+button {
+  width: 36px;
+  height: 36px;
+  background: #ef3f43 !important;
+  color: #ffffff !important;
+}
+
+button .mat-icon {
+  width: 19px;
+  height: 19px;
+  font-size: 19px;
+  line-height: 19px;
+}
+
 .center-button {
-  background-color: #e9e2c8 !important;
-  color: #6b3a14 !important;
+  background-color: #ef3f43 !important;
+  color: #ffffff !important;
   box-shadow: none !important;
 }
