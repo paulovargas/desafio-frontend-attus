@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -9,15 +10,9 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
-import { RouterLink } from '@angular/router';
 import { DeleteComponent } from '../delete/delete.component';
 import { MatIcon } from '@angular/material/icon';
-
-interface User {
-  id: number;
-  name: string;
-  email: string;
-}
+import { UserService } from '../../../users/data-access-users/services/user.service';
 
 @Component({
   selector: 'app-cards',
@@ -40,18 +35,14 @@ interface User {
 })
 export class CardsComponent {
   column = [ 'icon', 'name', 'email', 'action'];
-  
-  users: User[] = [
-    {
-      id: 1,
-      name: 'Paulo Vargas',
-      email: 'paulotomegomesdevargas@gmail.com'
-    }
-  ];
+
+  private readonly userService = inject(UserService);
+
+  users = toSignal(this.userService.getUsers(), { initialValue: [] });
 
   constructor(public dialog: MatDialog) { }
 
-  OpenDialog(id: number): void {
+  OpenDialog(id: string): void {
     this.dialog.open(DeleteComponent, {
       width: '450px',
       height: '450px',

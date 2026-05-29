@@ -1,0 +1,65 @@
+<form class="user-form" [formGroup]="userForm">
+  <h2>Adicionar novo usu&aacute;rio</h2>
+
+  <mat-form-field>
+    <mat-label>Usu&aacute;rio (e-mail) *</mat-label>
+    <input matInput type="email" formControlName="email" />
+    @if (showError('email', 'required')) {
+      <mat-error>E-mail obrigat&oacute;rio</mat-error>
+    } @else if (showError('email', 'email')) {
+      <mat-error>Informe um e-mail v&aacute;lido</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Nome completo *</mat-label>
+    <input matInput formControlName="fullName" />
+    @if (showError('fullName', 'required')) {
+      <mat-error>Nome obrigat&oacute;rio</mat-error>
+    } @else if (showError('fullName', 'minlength')) {
+      <mat-error>Informe ao menos 3 caracteres</mat-error>
+    }
+  </mat-form-field>
+
+  <div class="field-row">
+    <mat-form-field>
+      <mat-label>CPF *</mat-label>
+      <input matInput formControlName="cpf" maxlength="14" (input)="formatCpf($event)" />
+      @if (showError('cpf', 'required')) {
+        <mat-error>CPF obrigat&oacute;rio</mat-error>
+      } @else if (showError('cpf', 'cpf')) {
+        <mat-error>CPF inv&aacute;lido</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>N&uacute;mero do telefone *</mat-label>
+      <input matInput type="tel" formControlName="phoneNumber" />
+      @if (showError('phoneNumber', 'required')) {
+        <mat-error>Telefone obrigat&oacute;rio</mat-error>
+      } @else if (showError('phoneNumber', 'phone')) {
+        <mat-error>Use 10 ou 11 d&iacute;gitos</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select formControlName="phoneType">
+        <mat-option value="celular">CELULAR</mat-option>
+        <mat-option value="fixo">TELEFONE FIXO</mat-option>
+      </mat-select>
+      @if (showError('phoneType', 'required')) {
+        <mat-error>Tipo obrigat&oacute;rio</mat-error>
+      }
+    </mat-form-field>
+  </div>
+
+  <p class="hint">O usu&aacute;rio receber&aacute; uma senha provis&oacute;ria para acesso ao sistema por SMS.</p>
+
+  @if (saveError) {
+    <p class="save-error">{{ saveError }}</p>
+  }
+
+  <button mat-raised-button type="button" [disabled]="isSaving" (click)="submit()">
+    {{ isSaving ? 'SALVANDO...' : 'SALVAR' }}
+  </button>
+</form>
