@@ -39,3 +39,16 @@ body {
   --mat-fab-foreground-color: #ffffff;
   box-shadow: 0 2px 5px rgb(0 0 0 / 30%);
 }
+
+.user-form-dialog-panel .mat-mdc-dialog-container {
+  --mdc-dialog-container-shape: 0;
+}
+
+.user-form-dialog-panel .mat-mdc-dialog-surface {
+  border-radius: 0;
+  box-shadow: 0 2px 5px rgb(0 0 0 / 35%);
+}
+
+.user-form-dialog-panel .mat-mdc-dialog-container .mdc-dialog__surface {
+  overflow: visible;
+}
