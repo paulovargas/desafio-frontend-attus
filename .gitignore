@@ -41,3 +41,9 @@ testem.log
 .DS_Store
 Thumbs.db
 tela.jpeg
+
+# Local Firebase config
+/src/environments/firebase-config.ts
+
+# Local commit checklist
+/commit-plan.txt
