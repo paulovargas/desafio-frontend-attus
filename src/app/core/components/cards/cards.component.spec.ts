@@ -7,7 +7,6 @@ import { UserService } from '../../../users/data-access-users/services/user.serv
 import { CardsComponent } from './cards.component';
 import { User } from '../../../users/data-access-users/models/user';
 import { UserFormDialogComponent } from '../../../users/feature-users/user-form-dialog/user-form-dialog/user-form-dialog.component';
-import { DeleteComponent } from '../delete/delete.component';
 
 describe('CardsComponent', () => {
   let component: CardsComponent;
@@ -88,17 +87,4 @@ describe('CardsComponent', () => {
     });
   });
 
-  it('should open delete dialog with selected id', () => {
-    const dialogOpenSpy = jest.spyOn(component.dialog, 'open').mockReturnValue({} as never);
-
-    component.OpenDialog('user-1');
-
-    expect(dialogOpenSpy).toHaveBeenCalledWith(DeleteComponent, {
-      width: '450px',
-      height: '450px',
-      data: {
-        id: 'user-1',
-      },
-    });
-  });
 });

@@ -1,8 +1,6 @@
 import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {MatIconModule} from '@angular/material/icon';
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { UserService } from '../../../users/data-access-users/services/user.service';
@@ -14,7 +12,7 @@ import { UserService } from '../../../users/data-access-users/services/user.serv
   selector: 'app-input-search',
   templateUrl: './input-search.component.html',
   styleUrl: './input-search.component.css',
-  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatIconModule],
+  imports: [ReactiveFormsModule, MatIconModule],
 })
 export class InputSearchComponent {
   protected readonly searchControl = new FormControl('', { nonNullable: true });

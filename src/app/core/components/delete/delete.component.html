@@ -1,3 +1,19 @@
-<p>
-  delete works!
-</p>
+<div class="delete-dialog">
+  <div class="delete-icon">
+    <mat-icon>delete</mat-icon>
+  </div>
+
+  <h2>Excluir usuario</h2>
+  <p>Deseja excluir o cadastro de {{ user.name }}?</p>
+
+  @if (deleteError) {
+    <p class="delete-error">{{ deleteError }}</p>
+  }
+
+  <div class="delete-actions">
+    <button mat-button type="button" [disabled]="isDeleting" (click)="close()">CANCELAR</button>
+    <button mat-raised-button color="warn" type="button" [disabled]="isDeleting" (click)="confirmDelete()">
+      {{ isDeleting ? 'EXCLUINDO...' : 'EXCLUIR' }}
+    </button>
+  </div>
+</div>

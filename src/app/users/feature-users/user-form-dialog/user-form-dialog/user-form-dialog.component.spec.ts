@@ -1,15 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
+import { of } from 'rxjs';
 import { UserService } from '../../../data-access-users/services/user.service';
 
 import { UserFormDialogComponent } from './user-form-dialog.component';
 import { User } from '../../../data-access-users/models/user';
+import { DeleteComponent } from '../../../../core/components/delete/delete.component';
 
 describe('UserFormDialogComponent', () => {
   let component: UserFormDialogComponent;
   let fixture: ComponentFixture<UserFormDialogComponent>;
   let dialogRef: { close: jest.Mock };
+  let dialog: { open: jest.Mock };
   let userService: { addUser: jest.Mock; updateUser: jest.Mock };
   let toastrService: { error: jest.Mock; success: jest.Mock };
   let dialogData: User | null;
@@ -17,6 +20,7 @@ describe('UserFormDialogComponent', () => {
   beforeEach(async () => {
     dialogData = null;
     dialogRef = { close: jest.fn() };
+    dialog = { open: jest.fn() };
     userService = { addUser: jest.fn(), updateUser: jest.fn() };
     toastrService = { error: jest.fn(), success: jest.fn() };
 
@@ -24,6 +28,7 @@ describe('UserFormDialogComponent', () => {
       imports: [UserFormDialogComponent],
       providers: [
         { provide: MatDialogRef, useValue: dialogRef },
+        { provide: MatDialog, useValue: dialog },
         { provide: UserService, useValue: userService },
         { provide: ToastrService, useValue: toastrService },
         { provide: MAT_DIALOG_DATA, useFactory: () => dialogData },
@@ -136,6 +141,47 @@ describe('UserFormDialogComponent', () => {
     expect(component['isSaving']).toBe(false);
     expect(toastrService.error).toHaveBeenCalledWith('Nao foi possivel salvar o usuario.');
     expect(dialogRef.close).not.toHaveBeenCalled();
+  });
+
+  it('should ignore submit while save is still pending', async () => {
+    let resolveSave: () => void;
+    userService.addUser.mockReturnValue(new Promise<void>((resolve) => {
+      resolveSave = resolve;
+    }));
+    fillValidForm();
+
+    const firstSubmit = component['submit']();
+    await Promise.resolve();
+    await component['submit']();
+
+    expect(userService.addUser).toHaveBeenCalledTimes(1);
+
+    resolveSave!();
+    await firstSubmit;
+  });
+
+  it('should open delete confirmation and close edit dialog when deletion succeeds', () => {
+    const user = {
+      id: 'user-1',
+      name: 'Joao Souza',
+      email: 'joao@example.com',
+      cpf: '529.982.247-25',
+      phone: '11988888888',
+      phoneType: 'fixo',
+    };
+    Object.defineProperty(component, 'userData', { value: user });
+    const dialogOpenSpy = jest
+      .spyOn(component['dialog'], 'open')
+      .mockReturnValue({ afterClosed: () => of(true) } as never);
+
+    component['openDeleteDialog']();
+
+    expect(dialogOpenSpy).toHaveBeenCalledWith(DeleteComponent, {
+      width: '360px',
+      maxWidth: 'calc(100vw - 48px)',
+      data: user,
+    });
+    expect(dialogRef.close).toHaveBeenCalledWith(true);
   });
 
   function createComponent(): void {

@@ -6,7 +6,6 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
-import { DeleteComponent } from '../delete/delete.component';
 import { MatIcon } from '@angular/material/icon';
 import { User } from '../../../users/data-access-users/models/user';
 import { UserService } from '../../../users/data-access-users/services/user.service';
@@ -67,13 +66,4 @@ export class CardsComponent {
     });
   }
 
-  OpenDialog(id: string): void {
-    this.dialog.open(DeleteComponent, {
-      width: '450px',
-      height: '450px',
-      data: {
-        id: id,
-      },
-    });
-  }
 }

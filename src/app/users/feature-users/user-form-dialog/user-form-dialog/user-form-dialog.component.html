@@ -59,7 +59,15 @@
     <p class="save-error">{{ saveError }}</p>
   }
 
-  <button mat-raised-button type="button" [disabled]="isSaving || userForm.invalid" (click)="submit()">
-    {{ isSaving ? 'SALVANDO...' : (isEditMode ? 'ATUALIZAR' : 'SALVAR') }}
-  </button>
+  <div class="form-actions">
+    <button mat-raised-button type="button" [disabled]="isSaving || userForm.invalid" (click)="submit()">
+      {{ isSaving ? 'SALVANDO...' : (isEditMode ? 'ATUALIZAR' : 'SALVAR') }}
+    </button>
+
+    @if (isEditMode) {
+      <button class="delete-action" mat-raised-button type="button" [disabled]="isSaving" (click)="openDeleteDialog()">
+        EXCLUIR
+      </button>
+    }
+  </div>
 </form>

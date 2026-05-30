@@ -9,7 +9,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -18,9 +18,10 @@ import { UserService } from '../../../data-access-users/services/user.service';
 import { FirebaseError } from 'firebase/app';
 import { ToastrService } from 'ngx-toastr';
 import { User } from '../../../data-access-users/models/user';
+import { take } from 'rxjs';
+import { DeleteComponent } from '../../../../core/components/delete/delete.component';
 
 type PhoneType = 'celular' | 'fixo';
-const SAVE_TIMEOUT_MS = 12000;
 
 @Component({
   selector: 'app-user-form-dialog',
@@ -32,6 +33,7 @@ const SAVE_TIMEOUT_MS = 12000;
     MatInputModule,
     MatSelectModule,
     MatButtonModule,
+    MatDialogModule,
     MatIconModule,
   ],
 })
@@ -66,6 +68,7 @@ export class UserFormDialogComponent {
 
   constructor(
     private readonly dialogRef: MatDialogRef<UserFormDialogComponent>,
+    private readonly dialog: MatDialog,
     private readonly userService: UserService,
     private readonly toastr: ToastrService,
     @Inject(MAT_DIALOG_DATA) private readonly userData: User | null,
@@ -110,11 +113,10 @@ export class UserFormDialogComponent {
         phoneType: formValue.phoneType,
       };
 
-      await withTimeout(
+      await (
         this.isEditMode && this.userData
           ? this.userService.updateUser(this.userData.id, user)
-          : this.userService.addUser(user),
-        SAVE_TIMEOUT_MS,
+          : this.userService.addUser(user)
       );
 
       this.toastr.success(this.isEditMode ? 'Usuario atualizado com sucesso.' : 'Usuario salvo com sucesso.');
@@ -138,6 +140,24 @@ export class UserFormDialogComponent {
     const formattedCpf = cpfMask(input.value);
 
     this.userForm.controls.cpf.setValue(formattedCpf, { emitEvent: false });
+  }
+
+  protected openDeleteDialog(): void {
+    if (!this.userData) {
+      return;
+    }
+
+    this.dialog.open(DeleteComponent, {
+      width: '360px',
+      maxWidth: 'calc(100vw - 48px)',
+      data: this.userData,
+    }).afterClosed()
+      .pipe(take(1))
+      .subscribe((deleted) => {
+        if (deleted) {
+          this.dialogRef.close(true);
+        }
+      });
   }
 }
 
@@ -198,10 +218,6 @@ function cpfMask(value: string): string {
 }
 
 function getSaveErrorMessage(error: unknown): string {
-  if (error instanceof SaveTimeoutError) {
-    return 'Tempo esgotado ao salvar. Verifique a conexao e as regras do Firestore.';
-  }
-
   if (error instanceof FirebaseError) {
     if (error.code === 'permission-denied') {
       return 'Sem permissao para salvar. Verifique as regras do Firestore.';
@@ -219,23 +235,4 @@ function getSaveErrorMessage(error: unknown): string {
   }
 
   return 'Nao foi possivel salvar o usuario.';
-}
-
-class SaveTimeoutError extends Error {
-  constructor() {
-    super('Save timeout');
-  }
-}
-
-function withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T> {
-  return new Promise<T>((resolve, reject) => {
-    const timeoutId = window.setTimeout(() => {
-      reject(new SaveTimeoutError());
-    }, timeoutMs);
-
-    promise
-      .then(resolve)
-      .catch(reject)
-      .finally(() => window.clearTimeout(timeoutId));
-  });
 }

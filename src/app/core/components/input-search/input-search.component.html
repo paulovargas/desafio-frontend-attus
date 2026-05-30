@@ -1,9 +1,6 @@
 <form class="form">
-  <mat-form-field class="full-width">
-    <mat-label>Pesquisar ...</mat-label>
-    <span matTextPrefix>
-        <mat-icon aria-hidden="false" aria-label="User" fontIcon="search"></mat-icon>
-    </span>
-    <input type="search" matInput placeholder="Pesquisar ..." [formControl]="searchControl">
-  </mat-form-field>
+  <div class="search-box">
+    <mat-icon aria-hidden="false" aria-label="Pesquisar" fontIcon="search"></mat-icon>
+    <input type="search" placeholder="Pesquisar ..." [formControl]="searchControl">
+  </div>
 </form>

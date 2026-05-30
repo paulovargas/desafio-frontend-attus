@@ -3,6 +3,7 @@ import {
   addDoc,
   collection,
   collectionData,
+  deleteDoc,
   doc,
   Firestore,
   updateDoc,
@@ -56,6 +57,14 @@ export class UserService {
       const userRef = doc(this.firestore, this.collectionName, id);
 
       return updateDoc(userRef, user);
+    });
+  }
+
+  deleteUser(id: string): Promise<void> {
+    return runInInjectionContext(this.injector, () => {
+      const userRef = doc(this.firestore, this.collectionName, id);
+
+      return deleteDoc(userRef);
     });
   }
 }

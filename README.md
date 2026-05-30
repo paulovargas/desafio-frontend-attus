@@ -14,11 +14,18 @@ Aplicacao Angular para cadastro e listagem de usuarios usando Firebase Firestore
 
 ## Requisitos
 
-- Node.js compativel com Angular 19
+- Node.js 18.19 ou superior
 - npm
 - Projeto Firebase com Firestore habilitado
 
-## Instalacao
+## Instalacao do projeto
+
+Clone o repositorio e acesse a pasta do projeto:
+
+```bash
+git clone <URL_DO_REPOSITORIO>
+cd desafio-frontend-attus
+```
 
 Instale as dependencias:
 
@@ -28,13 +35,20 @@ npm install
 
 ## Configuracao do Firebase
 
-A aplicacao espera um arquivo local em:
+O projeto usa Firebase Web App e Firestore. Antes de rodar a aplicacao, crie o arquivo local:
 
 ```text
 src/environments/firebase-config.ts
 ```
 
-Crie o arquivo com a configuracao do seu projeto Firebase:
+Se a pasta ainda nao existir, crie tambem `src/environments`.
+
+No console do Firebase:
+
+1. Crie ou selecione um projeto.
+2. Adicione um app Web.
+3. Copie o objeto `firebaseConfig` gerado pelo Firebase.
+4. Crie `src/environments/firebase-config.ts` com este formato:
 
 ```ts
 export const firebaseConfig = {
@@ -47,16 +61,27 @@ export const firebaseConfig = {
 };
 ```
 
-Esse arquivo esta no `.gitignore` para evitar versionar credenciais/configuracoes locais.
+Esse arquivo esta no `.gitignore` para evitar versionar configuracoes locais.
 
 ## Firestore
 
 No console do Firebase:
 
-1. Crie ou selecione um projeto.
-2. Ative o Firestore Database.
-3. Crie a colecao `users`.
-4. Configure regras de acesso adequadas ao ambiente.
+1. Ative o Firestore Database.
+2. Crie a colecao `users`.
+3. Configure regras de acesso adequadas ao ambiente.
+
+Os documentos da colecao `users` usam estes campos:
+
+```ts
+{
+  name: string;
+  email: string;
+  cpf: string;
+  phone: string;
+  phoneType: 'celular' | 'fixo';
+}
+```
 
 Para desenvolvimento local, regras abertas podem ajudar em testes iniciais, mas nao devem ser usadas em producao:
 
@@ -82,6 +107,8 @@ Acesse:
 http://localhost:4200/
 ```
 
+Se o arquivo `src/environments/firebase-config.ts` nao existir ou estiver incompleto, o build/serve falhara porque a aplicacao importa essa configuracao em `src/app/app.config.ts`.
+
 ## Build
 
 ```bash
@@ -104,11 +131,36 @@ Rodar cobertura:
 npx jest --coverage --runInBand
 ```
 
+No PowerShell, caso `npx jest` seja bloqueado pela execution policy, use:
+
+```powershell
+npx.cmd jest --coverage --runInBand
+```
+
+O relatorio HTML de cobertura fica em:
+
+```text
+coverage/lcov-report/index.html
+```
+
+## Checklist de execucao
+
+Antes de avaliar ou publicar, rode:
+
+```bash
+npm install
+npm run build
+npm test -- --runInBand
+npx jest --coverage --runInBand
+```
+
+No PowerShell, use `npx.cmd jest --coverage --runInBand` para o comando de coverage se necessario.
+
 ## Funcionalidades
 
 - Listagem de usuarios cadastrados no Firestore.
 - Busca por nome com debounce.
 - Estado de carregamento e mensagem de erro na listagem.
-- Cadastro e edicao de usuarios por modal.
+- Cadastro, edicao e exclusao de usuarios por modal.
 - Validacoes de e-mail, nome, CPF, telefone e tipo de telefone.
 - Feedback visual com toast em acoes de sucesso e erro.
