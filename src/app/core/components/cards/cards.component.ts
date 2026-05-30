@@ -4,17 +4,16 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
 import { DeleteComponent } from '../delete/delete.component';
 import { MatIcon } from '@angular/material/icon';
 import { User } from '../../../users/data-access-users/models/user';
 import { UserService } from '../../../users/data-access-users/services/user.service';
-import { catchError, of } from 'rxjs';
+import { catchError, map, of } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { UserFormDialogComponent } from '../../../users/feature-users/user-form-dialog/user-form-dialog/user-form-dialog.component';
 
@@ -28,26 +27,33 @@ import { UserFormDialogComponent } from '../../../users/feature-users/user-form-
     /* RouterLink, */
     MatButtonModule,
     MatCardModule,
-    MatDatepickerModule,
     MatDialogModule,
     MatFormFieldModule,
     MatIcon,
     MatInputModule,
-    MatNativeDateModule,
+    MatProgressSpinnerModule,
     MatTableModule,
   ],
 })
 export class CardsComponent {
   column = [ 'icon', 'name', 'email', 'action'];
   usersError = '';
+  isLoading = true;
 
   private readonly userService = inject(UserService);
   private readonly toastr = inject(ToastrService);
 
   users = toSignal(
-    this.userService.getUsers().pipe(
+    this.userService.getFilteredUsers().pipe(
+      map((users) => {
+        this.isLoading = false;
+        this.usersError = '';
+
+        return users;
+      }),
       catchError((error) => {
         console.error('Erro ao listar usuarios no Firestore:', error);
+        this.isLoading = false;
         this.usersError = 'Nao foi possivel carregar os usuarios.';
         this.toastr.error(this.usersError);
 

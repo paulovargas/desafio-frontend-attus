@@ -7,7 +7,7 @@ import {
   Firestore,
   updateDoc,
 } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
 import { CreateUser, User } from '../models/user';
 
 @Injectable({
@@ -17,6 +17,11 @@ export class UserService {
   private readonly collectionName = 'users';
   private readonly firestore = inject(Firestore);
   private readonly injector = inject(Injector);
+  private readonly searchTermSubject = new BehaviorSubject('');
+
+  setSearchTerm(term: string): void {
+    this.searchTermSubject.next(term.trim().toLowerCase());
+  }
 
   getUsers(): Observable<User[]> {
     return runInInjectionContext(this.injector, () => {
@@ -24,6 +29,18 @@ export class UserService {
 
       return collectionData(usersRef, { idField: 'id' }) as Observable<User[]>;
     });
+  }
+
+  getFilteredUsers(): Observable<User[]> {
+    return combineLatest([this.getUsers(), this.searchTermSubject]).pipe(
+      map(([users, searchTerm]) => {
+        if (!searchTerm) {
+          return users;
+        }
+
+        return users.filter((user) => user.name.toLowerCase().includes(searchTerm));
+      }),
+    );
   }
 
   addUser(user: CreateUser): Promise<void> {

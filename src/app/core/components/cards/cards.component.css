@@ -30,6 +30,22 @@ mat-card::before {
   line-height: 16px;
 }
 
+.cards-loading,
+.cards-empty {
+  min-height: 58px;
+  margin: 0;
+  padding: 16px 14px;
+  color: #4f4f4f;
+  font-size: 12px;
+  line-height: 24px;
+}
+
+.cards-loading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 table {
   width: 100%;
   table-layout: fixed;

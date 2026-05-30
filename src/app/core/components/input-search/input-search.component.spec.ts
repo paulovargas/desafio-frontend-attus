@@ -1,20 +1,26 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
-import { InputSerchComponent } from './input-search.component';
+import { InputSearchComponent } from './input-search.component';
+import { UserService } from '../../../users/data-access-users/services/user.service';
 
-describe('InputSerchComponent', () => {
-  let component: InputSerchComponent;
-  let fixture: ComponentFixture<InputSerchComponent>;
+describe('InputSearchComponent', () => {
+  let component: InputSearchComponent;
+  let fixture: ComponentFixture<InputSearchComponent>;
+  let userService: { setSearchTerm: jest.Mock };
 
   beforeEach(async () => {
-    TestBed.configureTestingModule({
-      imports: [InputSerchComponent],
-    })
-    .compileComponents();
+    userService = { setSearchTerm: jest.fn() };
+
+    await TestBed.configureTestingModule({
+      imports: [InputSearchComponent],
+      providers: [
+        { provide: UserService, useValue: userService },
+      ],
+    }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(InputSerchComponent);
+    fixture = TestBed.createComponent(InputSearchComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -22,4 +28,15 @@ describe('InputSerchComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should debounce search term changes', fakeAsync(() => {
+    component['searchControl'].setValue('Maria');
+    tick(299);
+
+    expect(userService.setSearchTerm).not.toHaveBeenCalled();
+
+    tick(1);
+
+    expect(userService.setSearchTerm).toHaveBeenCalledWith('Maria');
+  }));
 });

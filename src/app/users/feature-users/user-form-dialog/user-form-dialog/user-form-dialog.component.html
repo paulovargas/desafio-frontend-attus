@@ -53,13 +53,13 @@
     </mat-form-field>
   </div>
 
-  <p class="hint">O usu&aacute;rio receber&aacute; uma senha provis&oacute;ria para acesso ao sistema por SMS.</p>
+  <p class="hint">O usu&aacute;rio poder&aacute; receber uma senha provis&oacute;ria por SMS ap&oacute;s integra&ccedil;&atilde;o com o servi&ccedil;o de mensagens.</p>
 
   @if (saveError) {
     <p class="save-error">{{ saveError }}</p>
   }
 
-  <button mat-raised-button type="button" [disabled]="isSaving" (click)="submit()">
+  <button mat-raised-button type="button" [disabled]="isSaving || userForm.invalid" (click)="submit()">
     {{ isSaving ? 'SALVANDO...' : (isEditMode ? 'ATUALIZAR' : 'SALVAR') }}
   </button>
 </form>

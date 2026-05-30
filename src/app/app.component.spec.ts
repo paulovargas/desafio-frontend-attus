@@ -11,7 +11,13 @@ describe('AppComponent', () => {
       imports: [AppComponent],
       providers: [
         provideRouter([]),
-        { provide: UserService, useValue: { getUsers: () => of([]) } },
+        {
+          provide: UserService,
+          useValue: {
+            getFilteredUsers: () => of([]),
+            setSearchTerm: jest.fn(),
+          },
+        },
         { provide: ToastrService, useValue: { error: jest.fn() } },
       ],
     }).compileComponents();

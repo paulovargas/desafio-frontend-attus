@@ -15,7 +15,7 @@ describe('CardsComponent', () => {
       imports: [CardsComponent],
       providers: [
         provideRouter([]),
-        { provide: UserService, useValue: { getUsers: () => of([]) } },
+        { provide: UserService, useValue: { getFilteredUsers: () => of([]) } },
         { provide: ToastrService, useValue: { error: jest.fn() } },
       ],
     }).compileComponents();

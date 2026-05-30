@@ -1,8 +1,11 @@
-import {Component} from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {MatIconModule} from '@angular/material/icon';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {FormsModule} from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { UserService } from '../../../users/data-access-users/services/user.service';
 
 /**
  * @title Inputs with prefixes and suffixes
@@ -11,10 +14,22 @@ import {FormsModule} from '@angular/forms';
   selector: 'app-input-search',
   templateUrl: './input-search.component.html',
   styleUrl: './input-search.component.css',
-  imports: [FormsModule, MatFormFieldModule, MatInputModule, MatIconModule],
+  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatIconModule],
 })
 export class InputSearchComponent {
+  protected readonly searchControl = new FormControl('', { nonNullable: true });
 
-  constructor() { }
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly userService = inject(UserService);
+
+  constructor() {
+    this.searchControl.valueChanges
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe((term) => this.userService.setSearchTerm(term));
+  }
 
 }
