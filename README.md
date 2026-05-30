@@ -1,59 +1,114 @@
-# DesafioFrontendAttus
+# Desafio Frontend Attus
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.15.
+Aplicacao Angular para cadastro e listagem de usuarios usando Firebase Firestore.
 
-## Development server
+## Stack
 
-To start a local development server, run:
+- Angular 19
+- Angular Material
+- Angular Fire
+- Firebase Firestore
+- RxJS
+- Jest
+- ngx-toastr
 
-```bash
-ng serve
-```
+## Requisitos
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- Node.js compativel com Angular 19
+- npm
+- Projeto Firebase com Firestore habilitado
 
-## Code scaffolding
+## Instalacao
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+Instale as dependencias:
 
 ```bash
-ng build
+npm install
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## Configuracao do Firebase
 
-## Running unit tests
+A aplicacao espera um arquivo local em:
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+```text
+src/environments/firebase-config.ts
+```
+
+Crie o arquivo com a configuracao do seu projeto Firebase:
+
+```ts
+export const firebaseConfig = {
+  apiKey: 'SUA_API_KEY',
+  authDomain: 'SEU_PROJECT_ID.firebaseapp.com',
+  projectId: 'SEU_PROJECT_ID',
+  storageBucket: 'SEU_PROJECT_ID.firebasestorage.app',
+  messagingSenderId: 'SEU_MESSAGING_SENDER_ID',
+  appId: 'SEU_APP_ID',
+};
+```
+
+Esse arquivo esta no `.gitignore` para evitar versionar credenciais/configuracoes locais.
+
+## Firestore
+
+No console do Firebase:
+
+1. Crie ou selecione um projeto.
+2. Ative o Firestore Database.
+3. Crie a colecao `users`.
+4. Configure regras de acesso adequadas ao ambiente.
+
+Para desenvolvimento local, regras abertas podem ajudar em testes iniciais, mas nao devem ser usadas em producao:
+
+```text
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}
+```
+
+## Rodar localmente
 
 ```bash
-ng test
+npm start
 ```
 
-## Running end-to-end tests
+Acesse:
 
-For end-to-end (e2e) testing, run:
+```text
+http://localhost:4200/
+```
+
+## Build
 
 ```bash
-ng e2e
+npm run build
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Os arquivos gerados ficam em `dist/desafio-frontend-attus`.
 
-## Additional Resources
+## Testes
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Rodar a suite:
+
+```bash
+npm test -- --runInBand
+```
+
+Rodar cobertura:
+
+```bash
+npm test -- --coverage --runInBand
+```
+
+## Funcionalidades
+
+- Listagem de usuarios cadastrados no Firestore.
+- Busca por nome com debounce.
+- Estado de carregamento e mensagem de erro na listagem.
+- Cadastro e edicao de usuarios por modal.
+- Validacoes de e-mail, nome, CPF, telefone e tipo de telefone.
+- Feedback visual com toast em acoes de sucesso e erro.
