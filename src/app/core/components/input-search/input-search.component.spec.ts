@@ -39,4 +39,13 @@ describe('InputSearchComponent', () => {
 
     expect(userService.setSearchTerm).toHaveBeenCalledWith('Maria');
   }));
+
+  it('should ignore repeated search terms', fakeAsync(() => {
+    component['searchControl'].setValue('Maria');
+    tick(300);
+    component['searchControl'].setValue('Maria');
+    tick(300);
+
+    expect(userService.setSearchTerm).toHaveBeenCalledTimes(1);
+  }));
 });
