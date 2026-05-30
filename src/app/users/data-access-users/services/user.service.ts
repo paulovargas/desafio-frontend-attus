@@ -3,7 +3,9 @@ import {
   addDoc,
   collection,
   collectionData,
+  doc,
   Firestore,
+  updateDoc,
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { CreateUser, User } from '../models/user';
@@ -29,6 +31,14 @@ export class UserService {
       const usersRef = collection(this.firestore, this.collectionName);
 
       return addDoc(usersRef, user).then(() => undefined);
+    });
+  }
+
+  updateUser(id: string, user: CreateUser): Promise<void> {
+    return runInInjectionContext(this.injector, () => {
+      const userRef = doc(this.firestore, this.collectionName, id);
+
+      return updateDoc(userRef, user);
     });
   }
 }

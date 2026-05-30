@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../../../data-access-users/services/user.service';
 
@@ -14,8 +14,9 @@ describe('UserFormDialogComponent', () => {
       imports: [UserFormDialogComponent],
       providers: [
         { provide: MatDialogRef, useValue: { close: jest.fn() } },
-        { provide: UserService, useValue: { addUser: jest.fn() } },
+        { provide: UserService, useValue: { addUser: jest.fn(), updateUser: jest.fn() } },
         { provide: ToastrService, useValue: { error: jest.fn(), success: jest.fn() } },
+        { provide: MAT_DIALOG_DATA, useValue: null },
       ],
     }).compileComponents();
   });

@@ -1,5 +1,5 @@
 <form class="user-form" [formGroup]="userForm">
-  <h2>Adicionar novo usu&aacute;rio</h2>
+  <h2>{{ isEditMode ? 'Editar usu&aacute;rio' : 'Adicionar novo usu&aacute;rio' }}</h2>
 
   <mat-form-field>
     <mat-label>Usu&aacute;rio (e-mail) *</mat-label>
@@ -60,6 +60,6 @@
   }
 
   <button mat-raised-button type="button" [disabled]="isSaving" (click)="submit()">
-    {{ isSaving ? 'SALVANDO...' : 'SALVAR' }}
+    {{ isSaving ? 'SALVANDO...' : (isEditMode ? 'ATUALIZAR' : 'SALVAR') }}
   </button>
 </form>

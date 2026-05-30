@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -10,7 +10,7 @@ import {
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -18,6 +18,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { UserService } from '../../../data-access-users/services/user.service';
 import { FirebaseError } from 'firebase/app';
 import { ToastrService } from 'ngx-toastr';
+import { User } from '../../../data-access-users/models/user';
 
 type PhoneType = 'celular' | 'fixo';
 const SAVE_TIMEOUT_MS = 12000;
@@ -40,6 +41,7 @@ export class UserFormDialogComponent {
   protected isSaving = false;
   protected submitted = false;
   protected saveError = '';
+  protected readonly isEditMode: boolean;
 
   protected readonly userForm = new FormGroup({
     email: new FormControl('', {
@@ -68,7 +70,20 @@ export class UserFormDialogComponent {
     private readonly dialogRef: MatDialogRef<UserFormDialogComponent>,
     private readonly userService: UserService,
     private readonly toastr: ToastrService,
-  ) { }
+    @Inject(MAT_DIALOG_DATA) private readonly userData: User | null,
+  ) {
+    this.isEditMode = !!this.userData?.id;
+
+    if (this.userData) {
+      this.userForm.patchValue({
+        email: this.userData.email,
+        fullName: this.userData.name,
+        cpf: this.userData.cpf,
+        phoneNumber: this.userData.phone,
+        phoneType: this.userData.phoneType,
+      });
+    }
+  }
 
   protected async submit(): Promise<void> {
     if (this.isSaving) {
@@ -89,19 +104,22 @@ export class UserFormDialogComponent {
 
     try {
       const formValue = this.userForm.getRawValue();
+      const user = {
+        name: formValue.fullName.trim(),
+        email: formValue.email.trim(),
+        cpf: formValue.cpf,
+        phone: formValue.phoneNumber.trim(),
+        phoneType: formValue.phoneType,
+      };
 
       await withTimeout(
-        this.userService.addUser({
-          name: formValue.fullName.trim(),
-          email: formValue.email.trim(),
-          cpf: formValue.cpf,
-          phone: formValue.phoneNumber.trim(),
-          phoneType: formValue.phoneType,
-        }),
+        this.isEditMode && this.userData
+          ? this.userService.updateUser(this.userData.id, user)
+          : this.userService.addUser(user),
         SAVE_TIMEOUT_MS,
       );
 
-      this.toastr.success('Usuario salvo com sucesso.');
+      this.toastr.success(this.isEditMode ? 'Usuario atualizado com sucesso.' : 'Usuario salvo com sucesso.');
       this.dialogRef.close(true);
     } catch (error) {
       console.error('Erro ao salvar usuario no Firestore:', error);

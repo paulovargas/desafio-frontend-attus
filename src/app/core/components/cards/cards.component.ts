@@ -12,9 +12,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { DeleteComponent } from '../delete/delete.component';
 import { MatIcon } from '@angular/material/icon';
+import { User } from '../../../users/data-access-users/models/user';
 import { UserService } from '../../../users/data-access-users/services/user.service';
 import { catchError, of } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { UserFormDialogComponent } from '../../../users/feature-users/user-form-dialog/user-form-dialog/user-form-dialog.component';
 
 @Component({
   selector: 'app-cards',
@@ -56,6 +58,15 @@ export class CardsComponent {
   );
 
   constructor(public dialog: MatDialog) { }
+
+  openEditDialog(user: User): void {
+    this.dialog.open(UserFormDialogComponent, {
+      width: '580px',
+      maxWidth: 'calc(100vw - 48px)',
+      panelClass: 'user-form-dialog-panel',
+      data: user,
+    });
+  }
 
   OpenDialog(id: string): void {
     this.dialog.open(DeleteComponent, {
