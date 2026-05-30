@@ -22,6 +22,14 @@ mat-card::before {
   font-weight: 500;
 }
 
+.cards-error {
+  margin: 0;
+  padding: 10px 14px;
+  color: #d32f2f;
+  font-size: 12px;
+  line-height: 16px;
+}
+
 table {
   width: 100%;
   table-layout: fixed;

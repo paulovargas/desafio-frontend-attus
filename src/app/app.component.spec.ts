@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { of } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 import { UserService } from './users/data-access-users/services/user.service';
 import { AppComponent } from './app.component';
 
@@ -11,6 +12,7 @@ describe('AppComponent', () => {
       providers: [
         provideRouter([]),
         { provide: UserService, useValue: { getUsers: () => of([]) } },
+        { provide: ToastrService, useValue: { error: jest.fn() } },
       ],
     }).compileComponents();
   });

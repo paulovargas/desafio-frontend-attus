@@ -1,4 +1,8 @@
 <mat-card>
+  @if (usersError) {
+    <p class="cards-error">{{ usersError }}</p>
+  }
+
   <table mat-table [dataSource]="users()" class="mat-elevation-z8">
     <ng-container matColumnDef="icon">
       <th mat-header-cell *matHeaderCellDef> </th>
