@@ -1,12 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
 import { DeleteComponent } from '../delete/delete.component';
@@ -23,14 +20,10 @@ import { UserFormDialogComponent } from '../../../users/feature-users/user-form-
   styleUrls: ['./cards.component.css'],
   imports: [
     CommonModule,
-    ReactiveFormsModule,
-    /* RouterLink, */
     MatButtonModule,
     MatCardModule,
     MatDialogModule,
-    MatFormFieldModule,
     MatIcon,
-    MatInputModule,
     MatProgressSpinnerModule,
     MatTableModule,
   ],

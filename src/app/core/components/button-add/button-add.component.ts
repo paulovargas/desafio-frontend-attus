@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {MatIconModule} from '@angular/material/icon';
-import {MatDividerModule} from '@angular/material/divider';
 import {MatButtonModule} from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { UserFormDialogComponent } from '../../../users/feature-users/user-form-dialog/user-form-dialog/user-form-dialog.component';
@@ -9,14 +8,11 @@ import { UserFormDialogComponent } from '../../../users/feature-users/user-form-
   selector: 'app-button-add',
   templateUrl: './button-add.component.html',
   styleUrls: ['./button-add.component.css'],
-  imports: [MatButtonModule, MatDividerModule, MatIconModule, MatDialogModule]
+  imports: [MatButtonModule, MatIconModule, MatDialogModule]
 })
-export class ButtonAddComponent implements OnInit {
+export class ButtonAddComponent {
 
   constructor(private dialog: MatDialog) { }
-
-  ngOnInit() {
-  }
 
   openModal(): void {
     this.dialog.open(UserFormDialogComponent, {

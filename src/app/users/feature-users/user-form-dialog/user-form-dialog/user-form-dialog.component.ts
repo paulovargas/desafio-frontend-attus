@@ -9,7 +9,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDividerModule } from '@angular/material/divider';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -33,7 +32,6 @@ const SAVE_TIMEOUT_MS = 12000;
     MatInputModule,
     MatSelectModule,
     MatButtonModule,
-    MatDividerModule,
     MatIconModule,
   ],
 })
