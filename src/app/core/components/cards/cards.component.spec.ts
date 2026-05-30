@@ -6,6 +6,8 @@ import { UserService } from '../../../users/data-access-users/services/user.serv
 
 import { CardsComponent } from './cards.component';
 import { User } from '../../../users/data-access-users/models/user';
+import { UserFormDialogComponent } from '../../../users/feature-users/user-form-dialog/user-form-dialog/user-form-dialog.component';
+import { DeleteComponent } from '../delete/delete.component';
 
 describe('CardsComponent', () => {
   let component: CardsComponent;
@@ -63,5 +65,40 @@ describe('CardsComponent', () => {
     expect(component.isLoading).toBe(false);
     expect(component.usersError).toBe('Nao foi possivel carregar os usuarios.');
     expect(toastrService.error).toHaveBeenCalledWith('Nao foi possivel carregar os usuarios.');
+  });
+
+  it('should open edit dialog with selected user', () => {
+    const dialogOpenSpy = jest.spyOn(component.dialog, 'open').mockReturnValue({} as never);
+    const user: User = {
+      id: 'user-1',
+      name: 'Maria Silva',
+      email: 'maria@example.com',
+      cpf: '529.982.247-25',
+      phone: '11999999999',
+      phoneType: 'celular',
+    };
+
+    component.openEditDialog(user);
+
+    expect(dialogOpenSpy).toHaveBeenCalledWith(UserFormDialogComponent, {
+      width: '580px',
+      maxWidth: 'calc(100vw - 48px)',
+      panelClass: 'user-form-dialog-panel',
+      data: user,
+    });
+  });
+
+  it('should open delete dialog with selected id', () => {
+    const dialogOpenSpy = jest.spyOn(component.dialog, 'open').mockReturnValue({} as never);
+
+    component.OpenDialog('user-1');
+
+    expect(dialogOpenSpy).toHaveBeenCalledWith(DeleteComponent, {
+      width: '450px',
+      height: '450px',
+      data: {
+        id: 'user-1',
+      },
+    });
   });
 });

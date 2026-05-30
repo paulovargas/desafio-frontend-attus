@@ -101,7 +101,7 @@ npm test -- --runInBand
 Rodar cobertura:
 
 ```bash
-npm test -- --coverage --runInBand
+npx jest --coverage --runInBand
 ```
 
 ## Funcionalidades
