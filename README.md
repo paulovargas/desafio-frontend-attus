@@ -164,3 +164,6 @@ No PowerShell, use `npx.cmd jest --coverage --runInBand` para o comando de cover
 - Cadastro, edicao e exclusao de usuarios por modal.
 - Validacoes de e-mail, nome, CPF, telefone e tipo de telefone.
 - Feedback visual com toast em acoes de sucesso e erro.
+
+
+## Página estática em : https://paulovargas.github.io/desafio-frontend-attus/
